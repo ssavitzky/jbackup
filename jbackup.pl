@@ -440,6 +440,10 @@ sub load_event {
     my $proplist = $bak{"event:proplist:$id"};
     my @props = split ',', $proplist;
     foreach (@props) {
+
+
+
+
         $hash{props}->{$_} = $bak{"event:prop:$id:$_"};
     }
     $hash{itemid} = $id;
@@ -600,7 +604,7 @@ sub do_alter_security {
             my ($subj, $time) = ($evt->{subject} || '(no subject)', $evt->{eventtime});
             my $ditemid = $evt->{itemid} * 256 + $evt->{anum};
             $subj = substr($subj, 0, 40);
-            printf "\%-45s\%s\n", $subj, "http://$opts{server}/users/$opts{linkuser}/$ditemid.html";
+            printf "\%-45s\%s\n", $subj, "https://$opts{server}/users/$opts{linkuser}/$ditemid.html";
         }
         return;
     }
@@ -644,7 +648,7 @@ sub do_alter_security {
         # print success
         my $ditemid = $hash->{itemid} * 256 + $hash->{anum};
         printf "\%s\n%-35s\%s\n\n", ($evt->{subject} || "(no subject)"), "public -> $security ($allowmask)",
-            "http://$opts{server}/users/$opts{linkuser}/$ditemid.html";
+            "https://$opts{server}/users/$opts{linkuser}/$ditemid.html";
     }
 
     # tell user to run --sync
@@ -764,7 +768,7 @@ sub dump_html {
                 my $ditemid = $data->{id} * 256 + $anum;
                 my $commentlink = "$link?thread=$ditemid#t$ditemid";
                 $ret .= $data->{posterid} ?
-                        "<a href='$commentlink'>Comment</a> by <a href='http://$opts{server}/profile.bml?user=$users->{$data->{posterid}}'>$users->{$data->{posterid}}</a> " :
+                        "<a href='$commentlink'>Comment</a> by <a href='https://$opts{server}/profile.bml?user=$users->{$data->{posterid}}'>$users->{$data->{posterid}}</a> " :
                         "<a href='$commentlink'>Anonymous comment</a> ";
                 $ret .= "on $data->{date}<br />\n";
                 $data->{subject} = $opts{clean} ? clean_subject($data->{subject}) : ehtml($data->{subject});
@@ -790,7 +794,7 @@ sub dump_html {
     foreach my $evt (sort { $a->{eventtime} cmp $b->{eventtime} } values %{$events || {}}) {
         $ret .= "<br /><div style='background-color: #eee; border: blue 1px solid;'>\n";
         my $itemid = $evt->{itemid} * 256 + $evt->{anum};
-        my $link = "http://$opts{server}/users/$opts{linkuser}/$itemid.html";
+        my $link = "https://$opts{server}/users/$opts{linkuser}/$itemid.html";
         $evt->{subject} = $opts{clean} ? clean_subject($evt->{subject}) : ehtml($evt->{subject});
         $ret .= "<b>$evt->{subject}</b>" if $evt->{subject};
         my $altposter = $evt->{poster} ? " (posted by $evt->{poster})" : "";
@@ -930,7 +934,7 @@ sub call_xmlrpc {
     $hash ||= {};
 
     my $xmlrpc = new XMLRPC::Lite;
-    $xmlrpc->proxy("http://$opts{server}/interface/xmlrpc");
+    $xmlrpc->proxy("https://$opts{server}/interface/xmlrpc");
     my $chal;
     while (!$chal) {
         my $get_chal = xmlrpc_call_helper($xmlrpc, 'LJ.XMLRPC.getchallenge');
@@ -1023,7 +1027,7 @@ sub ehtml {
 # they specify --clean, we will just replace poll tags with links to the poll, and not do much else.
 sub clean_event {
     my $input = shift;
-    $input =~ s!<(?:lj-)?poll-(\d+)>!<a href="http://$opts{server}/poll/?id=$1">View poll.</a>!g;
+    $input =~ s!<(?:lj-)?poll-(\d+)>!<a href="https://$opts{server}/poll/?id=$1">View poll.</a>!g;
     return $input;
 }
 
