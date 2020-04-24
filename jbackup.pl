@@ -340,7 +340,6 @@ sub do_sync {
     while (defined $server_next_id  && $server_next_id =~ /^\d+$/) {
         my $content = do_authed_fetch('comment_meta', $server_next_id, $COMMENTS_FETCH_META, $ljsession);
         die "Some sort of error fetching metadata from server" unless $content;
-
         $server_next_id = undef;
 
         # now we want to XML parse this
@@ -499,7 +498,8 @@ sub do_authed_fetch {
     my $ua = LWP::UserAgent->new;
     $ua->agent('JBackup/1.0');
     my $authas = $opts{usejournal} ? "&authas=$opts{usejournal}" : '';
-    my $request = HTTP::Request->new(GET => "http://$opts{server}/export_comments.bml?get=$mode&startid=$startid&numitems=$numitems$authas");
+    # Note: (ssavitzky 2020-04-24) s/http/https/
+    my $request = HTTP::Request->new(GET => "https://$opts{server}/export_comments.bml?get=$mode&startid=$startid&numitems=$numitems$authas");
     $request->push_header(Cookie => "ljsession=$sess");
     my $response = $ua->request($request);
     return if $response->is_error();
