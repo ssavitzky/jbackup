@@ -161,8 +161,16 @@ The script also checks for the presence of a ~/.jbackup file, and you can
 put options into it like this:
 
 user=test
-password=test
+password=API_KEY
 publiconly=1
+
+Get your API_KEY as follows:
+
+1. Navigate to the Mobile Post Settings page.
+2. Click the Generate New API Key button in the Manage API Keys section.
+3. Copy the API key that was generated.
+
+See https://dw-dev.dreamwidth.org/221358.html for more about API keys.
 HELP
     exit 1;
 }
