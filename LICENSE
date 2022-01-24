@@ -1,3 +1,13 @@
+This repository was split from
+
+  https://github.com/dreamwidth/dw-free/blob/master/src/jbackup/jbackup.pl
+
+In its original state jbackup is a single file in the
+https://github.com/dreamwidth/dw-free/ repository, and was last edited
+in 2013, (commit 9ac1042) when it was imported from lj.  It is covered
+by the following license:
+
+
 This repository was originally based off of code retrieved
 in 2008 from Six Apart's public "livejournal" svn repository,
 located at:
